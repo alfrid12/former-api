@@ -46,8 +46,22 @@ const getEntireCollection = (collectionName, callback) => {
     });
 }
 
+const deleteAllForms = callback => {
+    MongoClient.connect(url, (error, client) => {
+        if (error) console.log(error);
+        else {
+            const db = client.db(databaseName);
+            db.collection("forms").drop((error, result) => {
+                callback(error, result);
+                client.close();
+            });
+        }
+    });
+}
+
 module.exports = {
     insertObjectIntoCollection,
     getEntireCollection,
-    getFormByFormId
+    getFormByFormId,
+    deleteAllForms
 };
